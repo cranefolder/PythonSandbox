@@ -1,0 +1,10 @@
+-- To import it and run the functions separately
+from command prompt, navigate to folder with wordfind.py
+Run "python" command
+Run "import wordfind"
+Run "wordfind.testit()"
+
+-- Just to demo the functionality (automatically runs testit method)
+Or you can do this
+from command prompt, navigate to folder with wordfind.py
+Run "python wordfind.py" command
