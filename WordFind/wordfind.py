@@ -4,14 +4,15 @@
 
 """
 pz = ['veqas'
-     ,'mrlxt'
-     ,'hello'
-     ,'thiei'
-     ,'gtwoc']
+    ,'mrlxt'
+    ,'hello'
+    ,'thiei'
+    ,'gtwoc']
 
 sh = []
 
 wl = []
+
 
 def showlist(lst):
     """Print out each line in an array
@@ -23,7 +24,8 @@ def showlist(lst):
         A text representation of the entire word jumble puzzle
     """
     for line in lst:
-        print(' '.join(list(line))) #print(line)
+        print(' '.join(list(line)))
+
 
 def loadwordlist(path):
     try:
@@ -38,6 +40,7 @@ def loadwordlist(path):
     finally:
         wlfile.close()
 
+
 def loadpuzzle(path):
     try:
         pzfile = open(path)
@@ -51,8 +54,10 @@ def loadpuzzle(path):
     finally:
         pzfile.close()
 
+
 def showpuzzle():
     showlist(pz)
+
 
 def showsearchhelper():
     if len(sh) == 0:
@@ -70,68 +75,69 @@ def buildsearchhelper():
         linetext = pz[linenum]
         linepos = []
         for i in range(len(pz[linenum])):
-            linepos.append((linenum,i))
-        sh.append((linetext.upper(),linepos))
+            linepos.append((linenum, i))
+        sh.append((linetext.upper(), linepos))
 
     # set up for vertical lines
     for colnum in range(pzwidth):
         linetext = pz[0][colnum]
-        linepos = [(0,colnum)]
+        linepos = [(0, colnum)]
         for linenum in range(1, pzheight):
             linetext += pz[linenum][colnum]
-            linepos.append((linenum,colnum))
-        sh.append((linetext.upper(),linepos))
+            linepos.append((linenum, colnum))
+        sh.append((linetext.upper(), linepos))
 
     # set up for \ diagonal lines
     for c in range(pzwidth):
         linetext = pz[0][c]
-        linepos = [(0,c)]
+        linepos = [(0, c)]
         cd = c
         for r in range(1, pzheight):
-           cd += 1
-           if cd < pzwidth:
-               linetext += pz[r][cd]
-               linepos.append((r,cd))
-        sh.append((linetext.upper(),linepos))
+            cd += 1
+            if cd < pzwidth:
+                linetext += pz[r][cd]
+                linepos.append((r, cd))
+        sh.append((linetext.upper(), linepos))
     for r in range(1, pzheight):
         linetext = pz[r][0]
-        linepos =[(r,0)]
+        linepos = [(r, 0)]
         rd = r
         for c in range(1, pzwidth):
             rd += 1
             if rd < pzheight:
                 linetext += pz[rd][c]
-                linepos.append((rd,c))
-        sh.append((linetext.upper(),linepos))
+                linepos.append((rd, c))
+        sh.append((linetext.upper(), linepos))
 
     # set up for / diagonal lines
     for c in range(pzwidth):
         linetext = pz[0][c]
-        linepos = [(0,c)]
+        linepos = [(0, c)]
         cd = c
         for r in range(1, pzheight):
-           cd -= 1
-           if cd >= 0:
-               linetext += pz[r][cd]
-               linepos.append((r,cd))
-        sh.append((linetext,linepos))
+            cd -= 1
+            if cd >= 0:
+                linetext += pz[r][cd]
+                linepos.append((r, cd))
+        sh.append((linetext, linepos))
     for r in range(1, pzheight):
         linetext = pz[r][pzwidth - 1]
-        linepos =[(r,pzwidth - 1)]
+        linepos = [(r, pzwidth - 1)]
         rd = r
         for c in range(pzwidth - 2, -1, -1):
             rd += 1
             if rd < pzheight:
                 linetext += pz[rd][c]
-                linepos.append((rd,c))
-        sh.append((linetext,linepos))
+                linepos.append((rd, c))
+        sh.append((linetext, linepos))
     # add reversals of all current lines
     shlen = len(sh)
     for i in range(shlen):
         linetext = sh[i][0][::-1]
         linepos = sh[i][1][::-1]
         if len(linetext) > 1:
-            sh.append((linetext,linepos))
+            sh.append((linetext, linepos))
+
 
 def findword(word):
     """Print out the found word in the puzzle.
@@ -154,7 +160,7 @@ def findword(word):
             hello
             cow
     """
-    word = word.replace(' ','').upper()
+    word = word.replace(' ', '').upper()
     # build search helper only on the first find operation
     if len(sh) == 0:
         buildsearchhelper()
@@ -166,33 +172,37 @@ def findword(word):
     for linetext, linepos in sh:
         foundstart = linetext.find(word)
         if foundstart > -1:
-            for pos in linepos[foundstart : foundstart + len(word)]:
+            for pos in linepos[foundstart: foundstart + len(word)]:
                 found.append(pos)
             #break
 
     for linenum in range(len(pz)):
-        newline = '*'*len(pz[linenum])
+        newline = '*' * len(pz[linenum])
         for row, col in found:
             if row == linenum:
-                newline = newline[:col] + pz[row][col].upper() + newline[col+1:]
+                newline = newline[:col] + pz[row][col].upper() + newline[col + 1:]
         sf.append(newline)
 
     showlist(sf)
 
+
 def fw(word):
     findword(word)
+
 
 def findall():
     for line in wl:
         print(line + '\n')
         findword(line)
         if input('Press any key to continue or "Q" to quit.') == 'q':
-            break;
+            break
+
 
 def testit():
     loadpuzzle('Comics_Puzzle.txt')
     loadwordlist('Comics_WordList.txt')
     findall()
+
 
 if __name__ == '__main__':
     testit()

@@ -1,6 +1,29 @@
 {
+  "mainFile": "E:/GitHub/PythonSandbox/WordFind/wordfind.py", 
+  "use-tabs": false, 
   "venv": "", 
+  "relatedProjects": [], 
   "name": "WordFind", 
   "license": "GNU General Public License v3", 
+  "url": "", 
+  "pythonPath": "python", 
+  "preExecScript": "", 
+  "additional_builtins": [], 
+  "programParams": "", 
+  "indentation": 4, 
+  "PYTHONPATH": "", 
+  "supported-extensions": [
+    ".py", 
+    ".html", 
+    ".jpg", 
+    ".png", 
+    ".ui", 
+    ".css", 
+    ".json", 
+    ".js", 
+    ".ini"
+  ], 
+  "project-type": "", 
+  "postExecScript": "", 
   "description": ""
 }
