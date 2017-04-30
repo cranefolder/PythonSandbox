@@ -140,6 +140,10 @@ measurements = ['R']
 motions = [[0,0]]
 sensor_right = 1.0
 p_move = 1.0
+correct_answer = (
+    [[0.0, 0.0, 0.0],
+     [0.0, 1.0, 0.0],
+     [0.0, 0.0, 0.0]])
 '''
 
 '''
@@ -151,6 +155,10 @@ measurements = ['R']
 motions = [[0,0]]
 sensor_right = 1.0
 p_move = 1.0
+correct_answer = (
+    [[0.0, 0.0, 0.0],
+     [0.0, 0.5, 0.5],
+     [0.0, 0.0, 0.0]])
 '''
 
 
@@ -163,6 +171,10 @@ measurements = ['R']
 motions = [[0,0]]
 sensor_right = 0.8
 p_move = 1.0
+correct_answer = (
+    [[0.06666666666, 0.06666666666, 0.06666666666],
+     [0.06666666666, 0.26666666666, 0.26666666666],
+     [0.06666666666, 0.06666666666, 0.06666666666]])
 '''
 
 ''''''
@@ -174,6 +186,60 @@ measurements = ['R', 'R']
 motions = [[0,0], [0,1]]
 sensor_right = 0.8
 p_move = 1.0
+correct_answer = (
+    [[0.03333333333, 0.03333333333, 0.03333333333],
+     [0.13333333333, 0.13333333333, 0.53333333333],
+     [0.03333333333, 0.03333333333, 0.03333333333]])
+''''''
+
+'''
+# Test 5 -- Not Runs
+colors = [['G', 'G', 'G'],
+          ['G', 'R', 'R'],
+          ['G', 'G', 'G']]
+measurements = ['R', 'R']
+motions = [[0,0], [0,1]]
+sensor_right = 1.0
+p_move = 1.0
+p = localize(colors,measurements,motions,sensor_right,p_move)
+correct_answer = (
+    [[0.0, 0.0, 0.0],
+     [0.0, 0.0, 1.0],
+     [0.0, 0.0, 0.0]])
+'''
+
+'''
+# Test 6 -- Not Runs
+colors = [['G', 'G', 'G'],
+          ['G', 'R', 'R'],
+          ['G', 'G', 'G']]
+measurements = ['R', 'R']
+motions = [[0,0], [0,1]]
+sensor_right = 0.8
+p_move = 0.5
+p = localize(colors,measurements,motions,sensor_right,p_move)
+correct_answer = (
+    [[0.0289855072, 0.0289855072, 0.0289855072],
+     [0.0724637681, 0.2898550724, 0.4637681159],
+     [0.0289855072, 0.0289855072, 0.0289855072]])
+'''
+
+'''
+# Test 7 -- Not Runs
+colors = [['G', 'G', 'G'],
+          ['G', 'R', 'R'],
+          ['G', 'G', 'G']]
+measurements = ['R', 'R']
+motions = [[0,0], [0,1]]
+sensor_right = 1.0
+p_move = 0.5
+p = localize(colors,measurements,motions,sensor_right,p_move)
+correct_answer = (
+    [[0.0, 0.0, 0.0],
+     [0.0, 0.33333333, 0.66666666],
+     [0.0, 0.0, 0.0]])
+'''
+
 
 p = localize(colors,measurements,motions,sensor_right,p_move)
 show(p) # displays your answer
