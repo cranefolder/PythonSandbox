@@ -39,8 +39,8 @@ class matrix:
 
     def show(self):
         for i in range(self.dimx):
-            print self.value[i]
-        print ' '
+            print(self.value[i])
+        print(' ')
 
     def __add__(self, other):
         # check if correct dimensions
@@ -176,17 +176,43 @@ initial_xy = [4., 12.]
 
 dt = 0.1
 
-x = matrix([[initial_xy[0]], [initial_xy[1]], [0.], [0.]]) # initial state (location and velocity)
+x = matrix([[initial_xy[0]],[initial_xy[1]],[0.],[0.]]) # initial state (location and velocity)
 u = matrix([[0.], [0.], [0.], [0.]]) # external motion
 
 #### DO NOT MODIFY ANYTHING ABOVE HERE ####
 #### fill this in, remember to use the matrix() function!: ####
 
-P =  # initial uncertainty: 0 for positions x and y, 1000 for the two velocities
-F =  # next state function: generalize the 2d version to 4d
-H =  # measurement function: reflect the fact that we observe x and y but not the two velocities
-R =  # measurement uncertainty: use 2x2 matrix with 0.1 as main diagonal
-I =  # 4d identity matrix
+P =  matrix([[0., 0., 0.,       0.],
+             [0., 0., 0.,       0.],
+             [0., 0., 1000.,    0.],
+             [0., 0., 0.,    1000.]])# initial uncertainty: 0 for positions x and y, 1000 for the two velocities
+
+F =  matrix([[1., 0., dt, 0.],
+             [0., 1., 0., dt],
+             [0., 0., 1., 0.],
+             [0., 0., 0., 1.]])# next state function: generalize the 2d version to 4d
+
+H =  matrix([[1., 0., 0., 0.]
+            ,[0., 1., 0., 0.]])# measurement function: reflect the fact that we observe x and y but not the two velocities
+
+R =  matrix([[.1, 0.]
+            ,[0., .1]])# measurement uncertainty: use 2x2 matrix with 0.1 as main diagonal
+
+I =   matrix([[1., 0., 0., 0.],
+              [0., 1., 0., 0.],
+              [0., 0., 1., 0.],
+              [0., 0., 0., 1.]])# 4d identity matrix
+
+'''
+x = matrix([[0.]
+          , [0.]]) # initial state (location and velocity)
+P = matrix([[1000., 0.], [0., 1000.]]) # initial uncertainty
+u = matrix([[0.], [0.]]) # external motion
+F = matrix([[1., 1.], [0, 1.]]) # next state function
+H = matrix([[1., 0.]]) # measurement function
+R = matrix([[1.]]) # measurement uncertainty
+I = matrix([[1., 0.], [0., 1.]]) # identity matrix
+'''
 
 ###### DO NOT MODIFY ANYTHING HERE #######
 
