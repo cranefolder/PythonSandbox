@@ -93,31 +93,47 @@ class robot:
     #   move along a section of a circular path according to motion
     #
 
-    def move(self, motion): # Do not change the name of this function
+    def move(self, motion, add_noise = 1): # Do not change the name of this function
 
         # ADD CODE HERE
-        result = self
+        result = robot()
+        result.length = self.length
+        result.bearing_noise = self.bearing_noise
+        result.steering_noise = self.steering_noise
+        result.distance_noise = self.distance_noise
+
         alpha = motion[0]
         d = motion[1]
         L = self.length
         x = self.x
         y = self.y
-        theta = self.orientation
-        beta = (d / L) * tan(alpha)
-        if beta == 0:
-            xprime = x + (d * cos(theta))
-            yprime = y + (d * sin(theta))
+
+        # noise
+        if add_noise:
+            alpha2 = random.gauss(alpha, self.steering_noise)
+            d2 = random.gauss(d, self.distance_noise)
         else:
-            R = d / beta
+            alpha2 = alpha
+            d2 = d
+
+
+        theta = self.orientation
+        beta = (d2 / L) * tan(alpha2)
+        if beta == 0:
+            xprime = x + (d2 * cos(theta))
+            yprime = y + (d2 * sin(theta))
+            thetaprime = (theta + beta) % (2 * pi)
+        else:
+            R = d2 / beta
             cx = x - (sin(theta) * R)
             cy = y + (cos(theta) * R)
-            xprime = cx + (sin(theta + beta) * R)
-            yprime = cy - (cos(theta + beta) * R)
+            thetaprime = (theta + beta) % (2 * pi)
+            xprime = cx + (sin(thetaprime) * R)
+            yprime = cy - (cos(thetaprime) * R)
 
-        thetaprime = (theta + beta) % (2 * pi)
 
         result.set(xprime, yprime, thetaprime)
-        return result # make sure your move function returns an instance
+        return result# make sure your move function returns an instance
                       # of the robot class with the correct coordinates.
 
     ############## ONLY ADD/MODIFY CODE ABOVE HERE ####################
@@ -177,23 +193,23 @@ class robot:
 ##      Robot:     [x=83.736 y=46.485 orient=1.0135]
 ##
 ##
-##length = 20.
-##bearing_noise  = 0.0
-##steering_noise = 0.0
-##distance_noise = 0.0
+length = 20.
+bearing_noise  = 0.0
+steering_noise = 0.0
+distance_noise = 0.0
 
-##myrobot = robot(length)
-##myrobot.set(0.0, 0.0, 0.0)
-##myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+myrobot = robot(length)
+myrobot.set(0.0, 0.0, 0.0)
+myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
 
-##motions = [[0.2, 10.] for row in range(10)]
+motions = [[0.2, 10.] for row in range(10)]
 
-##T = len(motions)
+T = len(motions)
 
-##print('Robot:    ', myrobot)
-##for t in range(T):
-    ##myrobot = myrobot.move(motions[t])
-    ##print('Robot:    ', myrobot)
+print('Robot:    ', myrobot)
+for t in range(T):
+    myrobot = myrobot.move(motions[t])
+    print('Robot:    ', myrobot)
 
 ## IMPORTANT: You may uncomment the test cases below to test your code.
 ## But when you submit this code, your test cases MUST be commented
