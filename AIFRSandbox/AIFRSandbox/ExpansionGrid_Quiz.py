@@ -12,10 +12,10 @@
 # ----------
 
 grid = [[0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
         [0, 0, 1, 0, 1, 0],
         [0, 0, 1, 0, 1, 0],
-        [0, 0, 1, 0, 1, 0]]
+        [0, 0, 0, 0, 1, 0]]
 init = [0, 0]
 goal = [len(grid)-1, len(grid[0])-1]
 cost = 1
@@ -73,4 +73,12 @@ def search(grid,init,goal,cost):
                             closed[x2][y2] = 1
     return expand
 
-print(search(grid,init,goal,cost))
+
+result = search(grid,init,goal,cost)
+print(result[0])
+print(result[1])
+print(result[2])
+print(result[3])
+print(result[4])
+
+
