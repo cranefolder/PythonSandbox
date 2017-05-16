@@ -44,7 +44,7 @@ def search(grid,init,goal,cost):
     expandhelper = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
     action = [[-1 for row in range(len(grid[0]))] for col in range(len(grid))]
     expand = [[' ' for row in range(len(grid[0]))] for col in range(len(grid))]
-    step = 0
+    #step = 0
 
     x = init[0]
     y = init[1]
@@ -55,7 +55,7 @@ def search(grid,init,goal,cost):
     found = False  # flag that is set when search is complete
     resign = False # flag set if we can't find expand
 
-    expandhelper[init[0]][init[1]] = step
+    #expandhelper[init[0]][init[1]] = step
 
     while not found and not resign:
         if len(open) == 0:
@@ -68,8 +68,8 @@ def search(grid,init,goal,cost):
             x = next[1]
             y = next[2]
             g = next[0]
-            expandhelper[x][y] = step
-            step += 1
+            #expandhelper[x][y] = step
+            #step += 1
 
             if x == goal[0] and y == goal[1]:
                 found = True
