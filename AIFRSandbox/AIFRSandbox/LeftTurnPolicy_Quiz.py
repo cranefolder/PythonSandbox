@@ -65,7 +65,7 @@ def optimum_policy2D(grid,init,goal,cost):
             ,[[999 for col in range(len(grid[0]))] for row in range(len(grid))]
             ,[[999 for col in range(len(grid[0]))] for row in range(len(grid))]]
 
-    evaluated = [[0 for col in range(len(grid[0]))] for row in range(len(grid))]
+    bestcost = [[999 for col in range(len(grid[0]))] for row in range(len(grid))]
 
     y = init[0]
     x = init[1]
@@ -80,8 +80,8 @@ def optimum_policy2D(grid,init,goal,cost):
             ,[[0 for col in range(len(grid[0]))] for row in range(len(grid))]]
 
     closed[d][y][x] = 1
-
-    open = [[g, y, x, d]]
+    path = []
+    open = [[g, y, x, d, path]]
 
     found = False  # flag that is set when search is complete
     resign = False # flag set if we can't find expand
@@ -98,12 +98,13 @@ def optimum_policy2D(grid,init,goal,cost):
             y = next[1]
             x = next[2]
             d = next[3]
-
-            print('------------------------------------------------')
-            print(next)
+            path = list(next[4])
+            #print('------------------------------------------------')
+            #print(next)
 
             if x == goal[1] and y == goal[0]:
                 found = True
+                #print(path)
             else:
                 #for o in range(len(forward)):
                 for a in range(len(action)):
@@ -112,57 +113,27 @@ def optimum_policy2D(grid,init,goal,cost):
                     y2 = y + forward[d2][0]
                     x2 = x + forward[d2][1]
                     g2 = g + cost[a]
+                    path2 = list(path)
                     if x2 >= 0 and x2 < len(grid[0]) and y2 >=0 and y2 < len(grid):
-                        #if closed[d2][y2][x2] == 0 and grid[y2][x2] == 0:
                         if value[d2][y2][x2] > g2 and grid[y2][x2] == 0:
-                            print('a:' + str(a) + ' cost:' + str(cost[a]))
-                            open.append([g2, y2, x2, d2])
+                            #print('a:' + str(a) + ' cost:' + str(cost[a]))
+                            path2.append(a)
+                            open.append([g2, y2, x2, d2, path2])
                             value[d2][y2][x2] = g2
                             closed[d2][y2][x2] = 1
-                            #action[y2][x2] = motion # keep track of how we got to each expansion cell
-        print3dlist(value)
-    #x = goal[1]
-    #y = goal[0]
-    #expand[x][y] = '*'
+        #print3dlist(value)
+        #print2dlist(policy2D)
 
-    #while x != init[0] or y != init[1]:
-        #x2 = x - delta[action[x][y]][0]
-        #y2 = y - delta[action[x][y]][1]
-        #expand[x2][y2] = delta_name[action[x][y]]
-        #x = x2
-        #y = y2
-
-
-    ##x = goal[0]
-    ##y = goal[1]
-    ##g = 0
-    ##toevaluate = [[g, x, y]]
-    ##evaluated[x][y] = 1
-
-    ##while len(toevaluate) > 0:
-        ##toevaluate.sort()
-        ##toevaluate.reverse()
-        ##evaluating = toevaluate.pop()
-        ##g = evaluating[0]
-        ##x = evaluating[1]
-        ##y = evaluating[2]
-        ##value[o][x][y] = g
-
-        ##for o in range(len(forward)):
-            ##for i in range(len(delta)):
-                ##x2 = x + delta[i][0]
-                ##y2 = y + delta[i][1]
-                ##if x2 >= 0 and x2 < len(grid) and y2 >=0 and y2 < len(grid[0]):
-                    ##if evaluated[x2][y2] == 0 and grid[x2][y2] == 0:
-                        ##g2 = g + cost
-                        ##toevaluate.append([g2, x2, y2])
-                        ##evaluated[x2][y2] = 1
-
-    #print(str(value[0][0]) + '    '  + str(value[1][0]) + '    '  + str(value[2][0]) + '    '  + str(value[3][0]))
-    #print(str(value[0][1]) + '    '  + str(value[1][1]) + '    '  + str(value[2][1]) + '    '  + str(value[3][1]))
-    #print(str(value[0][2]) + '    '  + str(value[1][2]) + '    '  + str(value[2][2]) + '    '  + str(value[3][2]))
-    #print(str(value[0][3]) + '    '  + str(value[1][3]) + '    '  + str(value[2][3]) + '    '  + str(value[3][3]))
-    #print(str(value[0][4]) + '    '  + str(value[1][4]) + '    '  + str(value[2][4]) + '    '  + str(value[3][4]))
+    y = init[0]
+    x = init[1]
+    d = init[2]
+    for a in range(len(path)):
+        policy2D[y][x] = action_name[path[a]]
+        d = (d + action[path[a]]) % len(forward)
+        y = y + forward[d][0]
+        x = x + forward[d][1]
+        if x == goal[1] and y == goal[0]:
+            policy2D[y][x] = '*'
 
     return policy2D, value
 
@@ -181,6 +152,19 @@ def print3dlist(i):
         print(s + ']')
     print('')
 
+def print2dlist(i):
+    print('--------------    Policy              ----------------------')
+    for r in range(len(i)):
+        s = '['
+        for c in range(len(i[0])):
+            if c == 0:
+                s += str(i[r][c]).rjust(3)
+            else:
+                s += ',' + str(i[r][c]).rjust(5)
+        print(s + ']')
+    print('')
+
 
 result, result2 = optimum_policy2D(grid,init,goal,cost)
 print3dlist(result2)
+print2dlist(result)
