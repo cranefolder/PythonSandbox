@@ -64,15 +64,23 @@ def optimum_policy(grid,goal,cost):
                     evaluated[x2][y2] = 1
                     policy[x2][y2] = delta_name[(i + 2) % 4]
 
+    print2dlist(value)
     return policy
 
+
+def print2dlist(i):
+    for r in range(len(i)):
+        s = '['
+        for c in range(len(i[0])):
+            if c == 0:
+                s += str(i[r][c]).rjust(3)
+            else:
+                s += ',' + str(i[r][c]).rjust(5)
+        print(s + ']')
+    print('')
 
 result = optimum_policy(grid,goal,cost)
 if (result == 'Fail'):
     print(result)
 else:
-    print(result[0])
-    print(result[1])
-    print(result[2])
-    print(result[3])
-    print(result[4])
+    print2dlist(result)
