@@ -1,7 +1,5 @@
 from math import *
 
-def distance_between(point1, point2):
-    return sqrt((point2.xcoor - point1.xcoor) ** 2 + (point2.ycoor - point1.ycoor) ** 2)
 
 class CircleSegment:
 
@@ -49,111 +47,6 @@ class LineSegment:
 
 
 
-    #def distancetopoint(self, px, py):
-
-        #dst = 1.e6
-        #dx = self.xend - self.xstart
-        #dy = self.yend - self.ystart
-
-        #d2 = (dx*dx + dy*dy)
-
-        #if abs(d2) > 1.e-6:
-
-            #t = ((px - self.xstart) * dx + (py - self.ystart) * dy)/d2
-
-            ## if point is on line segment
-            #if 0.0 <= t <= 1.0:
-                #intx, inty = self.xstart + t*dx, self.ystart + t*dy
-                #dx, dy = px - intx, py - inty
-
-            ## point is beyond end point
-            #elif t > 1.0 :
-                #dx, dy = px - l1[0], py - l1[1]
-
-            ## point is before beginning point
-            #else:
-                #dx, dy = px - self.xstart, py - self.ystart
-
-            #dst = sqrt(dx*dx + dy*dy)
-
-        #else:
-            #dx, dy = px - self.xstart, py - self.ystart
-            #dst = sqrt(dx*dx + dy*dy)
-
-
-        #return dst
-
-    #def _corner_intersection( self, t0, t1, corner ):
-    #def collideswithcircle(self, circlesegment):
-
-        #dst = 1.e6
-        #intercept_point = (0.,0.)
-
-        #a = circlesegment.xcoor
-        #b = circlesegment.ycoor
-        #r = circlesegment.rad
-
-        ## check the case for infinite slope
-        #dx = self.xend - self.xstart
-
-        ## Find intersection assuming vertical trajectory
-        #if abs( dx ) < 1.e-6 :
-            #x0 = self.xstart - a
-            ##qa = 1.
-            #qb = -2.*b
-            #qc = b*b + x0*x0 - r*r
-            #disc = qb*qb - 4.*qc
-
-            #if disc >= 0.:
-                #sd = sqrt(disc)
-                #xp = xm = self.xstart
-                #yp = (-qb + sd)/2.
-                #ym = (-qb - sd)/2.
-
-        ## Find intersection assuming non vertical trajectory
-        #else:
-            #m = (self.yend - self.ystart)/dx # slope of line
-            #c = self.ystart - m*self.xstart    # y intercept of line
-
-            #qa = 1.+m*m
-            #qb = 2.*(m*c - m*b - a)
-            #qc = a*a + b*b + c*c - 2.*b*c - r*r
-
-            #disc = qb*qb - 4.*qa*qc
-
-            #if disc >= 0.:
-                #sd = math.sqrt(disc)
-                #xp = (-qb + sd) / (2.*qa)
-                #yp = m*xp + c
-                #xm = (-qb - sd) / (2.*qa)
-                #ym = m*xm + c
-
-        #if disc >= 0. :
-            #dp2 = dm2 = 1.e6
-            #if corner['min_x'] <= xp <= corner['max_x'] and corner['min_y'] <= yp <= corner['max_y'] :
-                #dp2 = (xp - self.xstart)**2 + (yp- self.ystart)**2
-
-            #if corner['min_x'] <= xm <= corner['max_x'] and corner['min_y'] <= ym <= corner['max_y'] :
-                #dm2 = (xm - self.xstart)**2 + (ym- self.ystart)**2
-
-            #if dp2 < dm2 :
-                ## make sure the intersection pointn is actually on the trajectory segment
-                #if self.distancetopoint(xp, yp) < 1.e-6 :
-                    #dst = sqrt(dp2)
-                    #intercept_point = (xp, yp)
-            #else :
-                #if self.distancetopoint(xm, ym) < 1.e-6 :
-                    #dst = sqrt(dm2)
-                    #intercept_point = (xm, ym)
-
-        #collide = dst < min_distance_to_intercept
-        #if not collide:
-            #print intercept_point
-            #collide = collide
-
-        #return collide
-
-    #def constraintCollide(self, constraint):
     def collideswithcircle(self, circlesegment):
         dstart = sqrt((circlesegment.xcoor - self.xstart) ** 2 + (circlesegment.ycoor - self.ystart) ** 2)
         dend = sqrt((circlesegment.xcoor - self.xend) ** 2 + (circlesegment.ycoor - self.yend) ** 2)
@@ -186,40 +79,131 @@ class LineSegment:
 
         return collide
 
-#path = LineSegment(1.0, -1.0, 1.0, -3.0)
-#wall = LineSegment(0.1, -0.1, 0.1, -2.1) # F parallel
-#wall = LineSegment(0.5, -0.5, 2.0, -0.5) # F perpendicular
-#wall = LineSegment(1.0, 0.0, 0.0, -2.0) # T same end point
-#wall = LineSegment(0.0, -1.0, 1.0, 0.0) # T hit mid point
-#wall = LineSegment(1.0, -1.0, -1.0, -1.0) # T cross over
-#wall = LineSegment(0.0, -1.0, 0.0, -3.0) # T partial overlap
-#wall = LineSegment(0.0, -0.5, 0.0, -1.0) # T subsection overlap of path
-#wall = LineSegment(0.0, 1.0, 0.0, -3.0) # T superset overlap of path
+PI = pi
+goalchar = '@'
+freechar = '.'
+cantraverse = [freechar,goalchar]
+proxfactor = 0.45
+measurelimit = 4.5
+lmdirname = ['N','S','W','E']
 
-#path = LineSegment(1.0, -1.0, 1.0, -3.0)
-#corner = CircleSegment(1.0, -0.5, .26) # F inline above
-#corner = CircleSegment(1.1, -1.0, .26) # T starting point inside circle
-#corner = CircleSegment(0.9, -2.9, .26) # T end point inside circle
-#corner = CircleSegment(1.2, -2.0, .26) # T point on right of line
-#corner = CircleSegment(0.8, -2.0, .26) # T point on left of line
+def heading_between(p1, p2):
+    return atan2(p2.ycoor - p1.ycoor, p2.xcoor - p1.xcoor)
+
+def heading_delta(hfrom, hto):
+    #if (hfrom >= 0.0 and hto >= 0.0) or (hfrom <= 0.0 and hto <= 0.0):
+    hdelta = hto - hfrom
+    if hdelta > pi:
+        hdelta += (-2.0 * pi)
+    elif hdelta < (-1.0 * pi):
+        hdelta += (2.0 * pi)
+
+    return hdelta
+
+def angle_between(p1, p2):
+    return acos((p1.xcoor*p2.xcoor + p1.ycoor*p2.ycoor) / (sqrt(p1.xcoor**2 + p1.ycoor**2) * sqrt(p2.xcoor**2 + p2.ycoor**2)))
+
+def distance_between(point1, point2):
+    return sqrt((point2.xcoor - point1.xcoor) ** 2 + (point2.ycoor - point1.ycoor) ** 2)
+
+def getnewlocation(location, h, d):
+    # Use the current heading, current turning angle, distance traveling
+    # each step and current position to calculate the next position
+    new_x = (cos(h) * d) + location.xcoor
+    new_y = (sin(h) * d) + location.ycoor
+    return MapPoint(new_x, new_y)
+
+def getnewpoint(location, orientation, h, d):
+    # Use the current heading, current turning angle, distance traveling
+    # each step and current position to calculate the next position
+    new_x = (cos(h + orientation) * d) + location.xcoor
+    new_y = (sin(h + orientation) * d) + location.ycoor
+    return RealPoint(new_x, new_y)
 
 
-path = LineSegment(1.0, -1.0, 3.0, -3.0)
-corner = CircleSegment(0.5, -0.5, .26) # F inline above
-corner = CircleSegment(1.1, -1.1, .26) # T starting point inside circle
-corner = CircleSegment(2.9, -3.1, .26) # T end point inside circle
-corner = CircleSegment(2.0, -1.9, .26) # T point above line
-corner = CircleSegment(2.0, -2.1, .26) # T point below line
+def getxydeltas(orientation, h, d):
+    # Use the bearing and distance to find the x delta and y delta
+    xdelta = (cos(h + orientation) * d)
+    ydelta= (sin(h + orientation) * d)
+    return xdelta, ydelta
+
+def print2Dlist(list):
+    for i in range(len(list)):
+        print list[i]
+
+def pathstring(action, x, y):
+    return action + ' ' + str(y) + ' ' + str(x)
+
+def pathstringpoint(action, point):
+    return pathstring(action, point.x, point.y)
+
+
+class RealPoint:
+
+    def __init__(self, x, y):
+        self.xcoor = x
+        self.ycoor = y
+        self.x = abs(int(self.xcoor))
+        self.y = abs(int(self.ycoor))
+        self.xmid = self.x + 0.5
+        self.ymid = (-1.0 * self.y) - 0.5
+        self.xlow = 1.0 * self.x
+        self.ylow = (-1.0 * self.y)
+        self.xhigh = self.xlow + 1.0
+        self.yhigh = self.ylow - 1.0
+
+
+    def show(self, txt = 'point'):
+        print txt + ' (xcoor,ycoor): (' + str(self.xcoor) + ', ' + str(self.ycoor) + ')'
+
+class MapPoint:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.xcoor = x + 0.5
+        self.ycoor = -1.0 * (y + 0.5)
+        self.xmid = self.x + 0.5
+        self.ymid = (-1.0 * self.y) - 0.5
+        self.xlow = 1.0 * self.x
+        self.ylow = (-1.0 * self.y)
+        self.xhigh = self.xlow + 1.0
+        self.yhigh = self.ylow - 1.0
+
+    def show(self, txt = 'point'):
+        print txt + ': (' + str(self.x) + ', ' + str(self.y) + ')'
+
+    def showactual(self, txt = 'point'):
+        print txt + ': (' + str(self.xcoor) + ', ' + str(self.ycoor) + ')'
+
+    def showall(self, txt = 'point'):
+        print txt + ' (x,y): (' + str(self.x) + ', ' + str(self.y) + ')'
+        print txt + ' (xcoor,ycoor): (' + str(self.xcoor) + ', ' + str(self.ycoor) + ')'
+        print txt + ' (xmid,ymid): (' + str(self.xmid) + ', ' + str(self.ymid) + ')'
+        print txt + ' (xlow,ylow): (' + str(self.xlow) + ', ' + str(self.ylow) + ')'
+        print txt + ' (xhigh,yhigh): (' + str(self.xhigh) + ', ' + str(self.yhigh) + ')'
 
 
 
-#if path.collideswithsegment(wall):
-    #print 'collide'
-#else:
-    #print 'no problem'
+"""
 
+West OOPS!!  rl:(3.10146971341, -2.61971253329) rawpx:0.601469713403 rawpy:-2.61971253328 xd:-1.22411659887e-11 yd:-2.50000000001
+measure: ('warehouse', 2, 2.500000000009793, -1.570796326799793)
+"""
 
-if path.collideswithcircle(corner):
-    print 'collide'
-else:
-    print 'no problem'
+measurement = ('warehouse', 2, 2.500000000009793, -1.570796326799793)
+robotlocation = RealPoint(2.5, -1.5)
+robotorienation = -PI/2
+landmarkindex = -1
+lmtype = measurement[0]
+lmdir = lmdirname[measurement[1]]
+lmdistance = measurement[2]
+lmbearing = measurement[3]
+
+lmrawpoint = getnewpoint(robotlocation, robotorienation, lmbearing, lmdistance)
+xdelta, ydelta = getxydeltas(robotorienation, lmbearing, lmdistance)
+
+print 'rl:(' + str(robotlocation.xcoor) + ', ' + str(robotlocation.ycoor) +  ')'
+print 'rawpx:' + str(lmrawpoint.xcoor) + ' rawpy:' + str(lmrawpoint.ycoor)
+print 'xd:' + str(xdelta) + 'yd:' + str(ydelta)
+
