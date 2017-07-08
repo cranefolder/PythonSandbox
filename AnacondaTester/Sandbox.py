@@ -140,21 +140,43 @@ def pathstringpoint(action, point):
 
 class RealPoint:
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, mapxoffset, mapyoffset):
         self.xcoor = x
         self.ycoor = y
-        self.x = abs(int(self.xcoor))
-        self.y = abs(int(self.ycoor))
-        self.xmid = self.x + 0.5
-        self.ymid = (-1.0 * self.y) - 0.5
-        self.xlow = 1.0 * self.x
-        self.ylow = (-1.0 * self.y)
+        self.mapxoffset = mapxoffset
+        self.mapyoffset = mapyoffset
+        self.x = int(self.xcoor + self.mapxoffset)
+        self.y = int(self.mapyoffset - self.ycoor)
+        #self.x = abs(int(self.xcoor))
+        #self.y = abs(int(self.ycoor))
+
+        if self.xcoor >= 0.0:
+            self.xlow = 1.0 * int(self.xcoor)
+        else:
+            self.xlow = int(self.xcoor) - 1.0
+
+        if self.ycoor <= 0.0:
+            self.ylow = 1.0 * int(self.ycoor)
+        else:
+            self.ylow = int(self.ycoor) + 1.0
+
+        self.xmid = self.xlow + 0.5
+        self.ymid = self.ylow - 0.5
         self.xhigh = self.xlow + 1.0
         self.yhigh = self.ylow - 1.0
 
+    def calibrate(self, mapxoffset, mapyoffset):
+        self.mapxoffset = mapxoffset
+        self.mapyoffset = mapyoffset
+        self.x = int(self.xcoor + self.mapxoffset)
+        self.y = int(self.mapyoffset - self.ycoor)
 
     def show(self, txt = 'point'):
         print txt + ' (xcoor,ycoor): (' + str(self.xcoor) + ', ' + str(self.ycoor) + ')'
+        print txt + ' (mapx,mapy): (' + str(self.x) + ', ' + str(self.y) + ')'
+        print txt + ' (xlow,ylow): (' + str(self.xlow) + ', ' + str(self.ylow) + ')'
+        print txt + ' (xmid,ymid): (' + str(self.xmid) + ', ' + str(self.ymid) + ')'
+        print txt + ' (xhigh,yhigh): (' + str(self.xhigh) + ', ' + str(self.yhigh) + ')'
 
 class MapPoint:
 
@@ -191,19 +213,25 @@ West OOPS!!  rl:(3.10146971341, -2.61971253329) rawpx:0.601469713403 rawpy:-2.61
 measure: ('warehouse', 2, 2.500000000009793, -1.570796326799793)
 """
 
-measurement = ('warehouse', 2, 2.500000000009793, -1.570796326799793)
-robotlocation = RealPoint(2.5, -1.5)
-robotorienation = -PI/2
-landmarkindex = -1
-lmtype = measurement[0]
-lmdir = lmdirname[measurement[1]]
-lmdistance = measurement[2]
-lmbearing = measurement[3]
+#measurement = ('warehouse', 2, 2.500000000009793, -1.570796326799793)
+#robotlocation = RealPoint(2.5, -1.5)
+#robotorienation = -PI/2
+#landmarkindex = -1
+#lmtype = measurement[0]
+#lmdir = lmdirname[measurement[1]]
+#lmdistance = measurement[2]
+#lmbearing = measurement[3]
 
-lmrawpoint = getnewpoint(robotlocation, robotorienation, lmbearing, lmdistance)
-xdelta, ydelta = getxydeltas(robotorienation, lmbearing, lmdistance)
+#lmrawpoint = getnewpoint(robotlocation, robotorienation, lmbearing, lmdistance)
+#xdelta, ydelta = getxydeltas(robotorienation, lmbearing, lmdistance)
 
-print 'rl:(' + str(robotlocation.xcoor) + ', ' + str(robotlocation.ycoor) +  ')'
-print 'rawpx:' + str(lmrawpoint.xcoor) + ' rawpy:' + str(lmrawpoint.ycoor)
-print 'xd:' + str(xdelta) + 'yd:' + str(ydelta)
+#print 'rl:(' + str(robotlocation.xcoor) + ', ' + str(robotlocation.ycoor) +  ')'
+#print 'rawpx:' + str(lmrawpoint.xcoor) + ' rawpy:' + str(lmrawpoint.ycoor)
+#print 'xd:' + str(xdelta) + 'yd:' + str(ydelta)
 
+print ' -------  0.5, 0.5 no offsets ------ '
+rp = RealPoint(1.5, -1.5, 2, 3)
+rp.show()
+print ' -------  0.5, 0.5 offsets (2, 3) ------ '
+rp.calibrate(2, 3)
+rp.show()
