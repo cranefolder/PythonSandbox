@@ -147,8 +147,6 @@ class RealPoint:
         self.mapyoffset = mapyoffset
         self.x = int(self.xcoor + self.mapxoffset)
         self.y = int(self.mapyoffset - self.ycoor)
-        #self.x = abs(int(self.xcoor))
-        #self.y = abs(int(self.ycoor))
 
         if self.xcoor >= 0.0:
             self.xlow = 1.0 * int(self.xcoor)
@@ -229,9 +227,48 @@ measure: ('warehouse', 2, 2.500000000009793, -1.570796326799793)
 #print 'rawpx:' + str(lmrawpoint.xcoor) + ' rawpy:' + str(lmrawpoint.ycoor)
 #print 'xd:' + str(xdelta) + 'yd:' + str(ydelta)
 
-print ' -------  0.5, 0.5 no offsets ------ '
-rp = RealPoint(1.5, -1.5, 2, 3)
-rp.show()
-print ' -------  0.5, 0.5 offsets (2, 3) ------ '
-rp.calibrate(2, 3)
-rp.show()
+#print ' -------  0.5, 0.5 no offsets ------ '
+#rp = RealPoint(1.5, -1.5, 2, 3)
+#rp.show()
+#print ' -------  0.5, 0.5 offsets (2, 3) ------ '
+#rp.calibrate(2, 3)
+#rp.show()
+
+
+#todo = [(1.5,-1.5),(0.5,-1.5),(1.5,-0.5),(0.5,-0.5)]
+
+
+#todoindexsorted = []
+#while len(todoindexsorted) < len(todo):
+    #print '------------------------------------------'
+    #bestx = -1
+    #besty = 1
+    #besti = -1
+    #for i in range(len(todo)):
+        #print '------- ' + str(i)
+        #if i not in todoindexsorted:
+            #print '      x:' + str(todo[i][0]) + ' y:' + str(todo[i][1]) + ' xint:' + str(int(todo[i][0])) + ' yint:' + str(int(todo[i][1]))
+            #if (int(todo[i][1]) > besty) or (int(todo[i][1]) == besty and int(todo[i][0]) < bestx) or (besti == -1):
+                #besty = int(todo[i][1])
+                #bestx = int(todo[i][0])
+                #besti = i
+
+    #todoindexsorted.append(besti)
+    #print ''
+
+#todosorted = []
+#for i in range(len(todoindexsorted)):
+    #todosorted.append(todo[todoindexsorted[i]])
+
+
+#print todo
+#print todosorted
+
+fullmap = ['???'
+                       ,'?@?'
+                       ,'???']
+
+print2Dlist(fullmap)
+
+for l in range(len(fullmap)):
+    print fullmap[l]
